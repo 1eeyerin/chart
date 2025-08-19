@@ -1,0 +1,64 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+
+export default function AuthError() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
+  const getErrorMessage = (error: string | null) => {
+    switch (error) {
+      case "Callback":
+        return "로그인이 취소되었습니다.";
+      case "AccessDenied":
+        return "로그인 접근이 거부되었습니다.";
+      case "Verification":
+        return "인증에 실패했습니다.";
+      default:
+        return "로그인 중 오류가 발생했습니다.";
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
+        <div className="mb-6">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <svg
+              className="w-8 h-8 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">로그인 오류</h1>
+          <p className="text-gray-600">{getErrorMessage(error)}</p>
+        </div>
+
+        <div className="space-y-3">
+          <Link
+            href="/"
+            className="block w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            메인 페이지로 돌아가기
+          </Link>
+
+          <button
+            onClick={() => window.history.back()}
+            className="block w-full px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            이전 페이지로 돌아가기
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
