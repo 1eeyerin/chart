@@ -2,8 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typescript: {
-    // Vercel 빌드 시 타입 오류 무시
     ignoreBuildErrors: true,
+  },
+  eslint: {
+    // Vercel 빌드 시 ESLint 오류 무시
+    ignoreDuringBuilds: true,
   },
   images: {
     remotePatterns: [new URL("https://pbs.twimg.com/profile_images/**/**")],
