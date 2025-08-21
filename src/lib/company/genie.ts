@@ -50,11 +50,11 @@ async function searchInPageForGenie(
           rankSpan.clone().children().remove().end().text().trim() || 0
         );
 
-        const direction = rankSpan
-          .find(".hide")
-          .text()
-          .trim()
-          .replace("하강", "하락") as "상승" | "하락" | "유지";
+        const direction =
+          (rankSpan.find(".hide").text().trim().replace("하강", "하락") as
+            | "상승"
+            | "하락"
+            | "유지") || "유지";
         const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "-";
 
         foundData = {
