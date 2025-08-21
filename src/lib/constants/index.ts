@@ -5,3 +5,4 @@
 
 export * from "./env";
 export * from "./chartNames";
+export * from "./bots";
