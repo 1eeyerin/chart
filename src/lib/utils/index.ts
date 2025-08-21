@@ -5,4 +5,5 @@
 export * from "./time";
 export * from "./http";
 export * from "./cn";
+export * from "./envValidation";
 export * from "../types/chart";

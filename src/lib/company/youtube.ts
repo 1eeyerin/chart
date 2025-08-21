@@ -5,7 +5,6 @@ export const getYouTubeViewCount = async (
   videoUrl: string
 ): Promise<YouTubeViewCountResponse> => {
   try {
-    // YouTube Data API v3를 사용하여 조회수 가져오기
     const response = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?id=${videoUrl}&key=${API_KEYS.YOUTUBE}&part=statistics,snippet`
     );

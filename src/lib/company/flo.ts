@@ -1,20 +1,8 @@
-import { FloChartResponse, ProcessedFloTrack } from "@/lib/types/flo";
+import { FloChartResponse } from "@/lib/types/flo";
 import { getKoreanTime } from "../utils/time";
+import type { FloResult } from "./types";
 
-export interface FloResult {
-  timestamp: string;
-  found: boolean;
-  rank?: number;
-  change?: number;
-  direction?: "상승" | "하락" | "유지";
-  arrow?: string;
-  title?: string;
-  artist?: string;
-  albumTitle?: string;
-  isNew?: boolean;
-  updateTime?: string;
-}
-
+//TODO!
 export function processFloChartData(
   data: FloChartResponse,
   targetArtist: string
@@ -80,48 +68,10 @@ export function processFloChartData(
     arrow,
     title: foundTrack.name,
     artist: artistName,
-    albumTitle: foundTrack.album?.title || "앨범 정보 없음",
-    isNew,
-    updateTime,
   };
 }
 
-export function findFloArtist(
-  tracks: ProcessedFloTrack[],
-  targetArtist: string
-): {
-  found: boolean;
-  rank?: number;
-  title?: string;
-  artist?: string;
-  albumTitle?: string;
-  isNew?: boolean;
-  updateTime?: string;
-} {
-  const normalizedTarget = targetArtist.toLowerCase().trim();
-
-  const foundTrack = tracks.find(
-    (track) =>
-      track.artist.toLowerCase().includes(normalizedTarget) ||
-      track.title.toLowerCase().includes(normalizedTarget)
-  );
-
-  if (foundTrack) {
-    return {
-      found: true,
-      rank: foundTrack.rank,
-      title: foundTrack.title,
-      artist: foundTrack.artist,
-      albumTitle: foundTrack.albumTitle,
-      isNew: foundTrack.isNew,
-      updateTime: foundTrack.updateTime,
-    };
-  }
-
-  return { found: false };
-}
-
-export function formatDateTime(dateTimeString: string): string {
+function formatDateTime(dateTimeString: string): string {
   try {
     const date = new Date(dateTimeString);
     return date.toLocaleString("ko-KR", {
@@ -134,15 +84,4 @@ export function formatDateTime(dateTimeString: string): string {
   } catch {
     return dateTimeString;
   }
-}
-
-export function getTopTracks(
-  tracks: ProcessedFloTrack[],
-  count: number = 10
-): ProcessedFloTrack[] {
-  return tracks.slice(0, count);
-}
-
-export function getNewTracks(tracks: ProcessedFloTrack[]): ProcessedFloTrack[] {
-  return tracks.filter((track) => track.isNew);
 }

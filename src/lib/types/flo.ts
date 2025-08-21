@@ -43,12 +43,3 @@ export interface FloTrack {
 export interface FloChartResponse {
   trackList: FloTrack[];
 }
-
-export interface ProcessedFloTrack {
-  rank: number;
-  title: string;
-  artist: string;
-  albumTitle: string;
-  isNew: boolean;
-  updateTime: string;
-}

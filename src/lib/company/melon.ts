@@ -1,24 +1,17 @@
 import * as cheerio from "cheerio";
 import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
-import { ChartResultWithChange, ARROW_MAP } from "../types/chart";
+import { ARROW_MAP } from "../types/chart";
+import { MelonChartParams, MelonResult } from "./types";
 
 const TOP_URL = "https://www.melon.com/chart/index.htm";
 const HOT_URL = "https://www.melon.com/chart/hot100/index.htm";
 
-export interface MelonResult extends ChartResultWithChange {
-  type: "TOP" | "HOT";
-}
-
 export async function findMelon({
   type = "TOP",
   limit = 100,
-  artistName = "NCT WISH",
-}: {
-  type?: "TOP" | "HOT";
-  limit?: number;
-  artistName?: string;
-}): Promise<MelonResult> {
+  artistName,
+}: MelonChartParams): Promise<MelonResult> {
   const url = type === "TOP" ? TOP_URL : HOT_URL;
 
   // HTTP 요청 - PC User-Agent 사용

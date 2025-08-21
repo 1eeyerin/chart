@@ -1,24 +1,15 @@
 import * as cheerio from "cheerio";
 import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
-import { ChartResultWithTitle, ARROW_MAP } from "../types/chart";
+import type { BugsChartParams, BugsResult } from "./types";
 
-const TOPGENIE_URL = "https://m.bugs.co.kr/chart";
-
-export interface GenieResult extends ChartResultWithTitle {
-  direction?: "상승" | "하락" | "유지";
-  change?: number;
-  arrow?: string;
-}
+const BUGS_URL = "https://m.bugs.co.kr/chart";
 
 export async function findBugs({
   limit = 100,
-  artistName = "NCT WISH",
-}: {
-  limit?: number;
-  artistName?: string;
-} = {}): Promise<GenieResult> {
-  const url = TOPGENIE_URL;
+  artistName,
+}: BugsChartParams): Promise<BugsResult> {
+  const url = BUGS_URL;
 
   // HTTP 요청
   const html = await fetchChartHTML({
@@ -32,7 +23,7 @@ export async function findBugs({
   // 시간 포맷팅
   const now = getKoreanTime();
 
-  let data: GenieResult = { timestamp: now, found: false };
+  let data: BugsResult = { timestamp: now, found: false };
 
   $(".trackChartList li")
     .slice(0, limit)
@@ -40,15 +31,15 @@ export async function findBugs({
       const artist = $(el).find(".artistTitle").text().trim();
 
       // 먼저 아티스트 체크
-      if (!artist.includes(artistName)) {
+      if (!artistName || !artist.includes(artistName)) {
         return; // continue
       }
 
-      const rank = Number($(el).find(".ranking strong").text().trim()); // 순위
+      const rank = Number($(el).find(".ranking strong").text().trim());
 
       const changeEl = $(el).find(".ranking .change");
-      const directionClass = changeEl.attr("class") || ""; // up, down, none
-      const changeNum = changeEl.find("em").text().trim(); // 숫자 (없으면 빈 문자열)
+      const directionClass = changeEl.attr("class") || "";
+      const changeNum = changeEl.find("em").text().trim();
       const change = changeNum ? Number(changeNum) : 0;
 
       let direction: "상승" | "하락" | "유지";
