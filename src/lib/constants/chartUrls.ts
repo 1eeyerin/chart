@@ -11,7 +11,7 @@ export const CHART_URLS = {
 
   // 지니 차트
   GENIE: {
-    TOP: "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1",
+    TOP: "https://www.genie.co.kr/chart/top200?rtm=Y",
   },
 
   // 벅스 차트
