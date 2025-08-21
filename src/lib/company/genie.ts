@@ -8,7 +8,7 @@ const TOP_GENIE_URL = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1";
 
 export async function findGenie({
   limit = 100,
-  artistName,
+  title,
 }: GenieChartParams): Promise<GenieResult> {
   const url = TOP_GENIE_URL;
 
@@ -27,9 +27,9 @@ export async function findGenie({
   $(".music-list-wrap .list-wrap tbody tr")
     .slice(0, limit)
     .each((i, el) => {
-      const artist = $(el).find(".info .artist").text().trim();
+      const titleName = $(el).find(".title").text();
 
-      if (artist.includes(artistName)) {
+      if (titleName.includes(title)) {
         const rank = Number($(el).find(".number").text().split("\n")[0]);
 
         const rankSpan = $(el).find("span[class^='rank-']");
@@ -44,8 +44,6 @@ export async function findGenie({
           .replace("하강", "하락") as "상승" | "하락" | "유지";
         const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "-";
 
-        const title = $(el).find(".title").text();
-
         data = {
           timestamp: now,
           found: true,
@@ -53,8 +51,7 @@ export async function findGenie({
           change,
           direction,
           arrow,
-          title,
-          artist,
+          title: titleName,
         };
 
         return false;

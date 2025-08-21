@@ -5,13 +5,13 @@ import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
 import { GenieChartProps } from "./types";
 
-const GenieChart = async ({ session, artistName }: GenieChartProps) => {
+const GenieChart = async ({ session, title }: GenieChartProps) => {
   if (!session) {
     return null;
   }
 
   try {
-    const genieData = await findGenie({ artistName });
+    const genieData = await findGenie({ title });
 
     return (
       <ChartContainer title={`${CHART_NAMES.GENIE} 차트 현황`}>

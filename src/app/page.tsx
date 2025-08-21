@@ -31,22 +31,13 @@ export default async function Home() {
                     />
                   </div>
                   <div className="col-span-8">
-                    <MelonChart
-                      artistName={ARTIST_CONFIG.NAME}
-                      session={session}
-                    />
+                    <MelonChart title={ARTIST_CONFIG.TITLE} session={session} />
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-8">
-                  <GenieChart
-                    artistName={ARTIST_CONFIG.NAME}
-                    session={session}
-                  />
-                  <FloChart artistName={ARTIST_CONFIG.NAME} />
-                  <BugsChart
-                    artistName={ARTIST_CONFIG.NAME}
-                    session={session}
-                  />
+                  <GenieChart title={ARTIST_CONFIG.TITLE} session={session} />
+                  <FloChart title={ARTIST_CONFIG.TITLE} />
+                  <BugsChart title={ARTIST_CONFIG.TITLE} session={session} />
                 </div>
                 <TweetComposer />
               </>

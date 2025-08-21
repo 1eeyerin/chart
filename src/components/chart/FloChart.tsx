@@ -10,7 +10,7 @@ import { FloChartProps } from "./types";
 const FLO_CHART_URL =
   "https://www.music-flo.com/api/display/v1/browser/chart/1/track/list?size=100";
 
-const FloChart = async ({ artistName }: FloChartProps) => {
+const FloChart = async ({ title }: FloChartProps) => {
   try {
     const data = await fetchChartJSON({
       url: FLO_CHART_URL,
@@ -20,7 +20,7 @@ const FloChart = async ({ artistName }: FloChartProps) => {
 
     const floData = processFloChartData(
       (data?.data as FloChartResponse) || [],
-      artistName
+      title
     );
 
     return (

@@ -47,9 +47,6 @@ const ChartCard = ({
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <p className="text-sm text-gray-600">
-            <span className="font-medium">{data.artist}</span>의 순위
-          </p>
           <div className="flex items-center space-x-2">
             <span className={`text-2xl font-bold ${getRankColor("GENIE")}`}>
               {data.rank}위

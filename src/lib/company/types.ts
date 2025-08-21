@@ -1,6 +1,6 @@
 export interface BaseChartParams {
   limit?: number;
-  artistName: string;
+  title: string;
 }
 
 export interface MelonChartParams extends BaseChartParams {

@@ -9,7 +9,6 @@ export interface BaseChartResult {
   timestamp: string;
   found: boolean;
   rank?: number;
-  artist?: string;
 }
 
 /**

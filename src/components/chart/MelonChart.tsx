@@ -5,15 +5,15 @@ import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
 import { MelonChartProps } from "./types";
 
-const MelonChart = async ({ session, artistName }: MelonChartProps) => {
+const MelonChart = async ({ session, title }: MelonChartProps) => {
   if (!session) {
     return null;
   }
 
   try {
     const [top, hot] = await Promise.all([
-      findMelon({ type: "TOP", artistName }),
-      findMelon({ type: "HOT", artistName }),
+      findMelon({ type: "TOP", title }),
+      findMelon({ type: "HOT", title }),
     ]);
 
     return (

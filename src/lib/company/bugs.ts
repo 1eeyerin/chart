@@ -7,11 +7,10 @@ const BUGS_URL = "https://m.bugs.co.kr/chart";
 
 export async function findBugs({
   limit = 100,
-  artistName,
+  title,
 }: BugsChartParams): Promise<BugsResult> {
   const url = BUGS_URL;
 
-  // HTTP 요청
   const html = await fetchChartHTML({
     url,
     referer: "https://m.bugs.co.kr/chart",
@@ -28,11 +27,10 @@ export async function findBugs({
   $(".trackChartList li")
     .slice(0, limit)
     .each((i, el) => {
-      const artist = $(el).find(".artistTitle").text().trim();
+      const titleName = $(el).find(".trackTitle").text().trim();
 
-      // 먼저 아티스트 체크
-      if (!artistName || !artist.includes(artistName)) {
-        return; // continue
+      if (!title || !titleName.includes(title)) {
+        return;
       }
 
       const rank = Number($(el).find(".ranking strong").text().trim());
@@ -56,8 +54,6 @@ export async function findBugs({
         arrow = "⏺";
       }
 
-      const title = $(el).find(".trackTitle").text().trim(); // 곡명
-
       data = {
         timestamp: now,
         found: true,
@@ -65,8 +61,7 @@ export async function findBugs({
         change,
         direction,
         arrow,
-        title,
-        artist,
+        title: titleName,
       };
 
       return false;

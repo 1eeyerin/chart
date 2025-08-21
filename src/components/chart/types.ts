@@ -1,7 +1,7 @@
 import { Session } from "next-auth";
 
 export interface BaseChartProps {
-  artistName: string;
+  title: string;
 }
 
 export interface BaseChartWithSessionProps extends BaseChartProps {

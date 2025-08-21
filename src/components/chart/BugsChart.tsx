@@ -5,13 +5,13 @@ import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
 import { BugsChartProps } from "./types";
 
-const BugsChart = async ({ session, artistName }: BugsChartProps) => {
+const BugsChart = async ({ session, title }: BugsChartProps) => {
   if (!session) {
     return null;
   }
 
   try {
-    const bugsData = await findBugs({ artistName });
+    const bugsData = await findBugs({ title });
 
     return (
       <ChartContainer title={`${CHART_NAMES.BUGS} 차트 현황`}>
