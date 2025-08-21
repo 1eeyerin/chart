@@ -1,11 +1,12 @@
 import { NextAuthOptions } from "next-auth";
 import TwitterProvider from "next-auth/providers/twitter";
+import { AUTH_CONFIG } from "@/lib/constants";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     TwitterProvider({
-      clientId: process.env.TWITTER_ID!,
-      clientSecret: process.env.TWITTER_SECRET!,
+      clientId: AUTH_CONFIG.TWITTER.CLIENT_ID,
+      clientSecret: AUTH_CONFIG.TWITTER.CLIENT_SECRET,
       version: "2.0",
       authorization: {
         url: "https://twitter.com/i/oauth2/authorize",

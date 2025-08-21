@@ -1,21 +1,17 @@
 import { findGenie } from "@/lib/company/genie";
-import { Session } from "next-auth";
 import ChartContainer from "./ui/ChartContainer";
 import ChartCard from "./ui/ChartCard";
 import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
+import { GenieChartProps } from "./types";
 
-interface GenieServerProps {
-  session: Session | null;
-}
-
-const GenieChart = async ({ session }: GenieServerProps) => {
+const GenieChart = async ({ session, artistName }: GenieChartProps) => {
   if (!session) {
     return null;
   }
 
   try {
-    const genieData = await findGenie({ artistName: "임영웅" });
+    const genieData = await findGenie({ artistName });
 
     return (
       <ChartContainer title={`${CHART_NAMES.GENIE} 차트 현황`}>

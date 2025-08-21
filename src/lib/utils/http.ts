@@ -1,3 +1,5 @@
+import { USER_AGENT_CONFIG } from "@/lib/constants";
+
 /**
  * HTTP 요청을 위한 공통 설정과 유틸리티
  */
@@ -28,16 +30,8 @@ export const CHART_FETCH_OPTIONS = {
  * @returns User-Agent 문자열
  */
 function getUserAgent(type: UserAgentType): string {
-  const envKey =
-    type === "PC"
-      ? "NEXT_PUBLIC_PC_USER_AGENT"
-      : "NEXT_PUBLIC_MOBILE_USER_AGENT";
-  const userAgent = process.env[envKey];
-
-  if (!userAgent) {
-    throw new Error(`${envKey} 환경변수가 설정되지 않았습니다.`);
-  }
-
+  const userAgent =
+    type === "PC" ? USER_AGENT_CONFIG.PC : USER_AGENT_CONFIG.MOBILE;
   return userAgent;
 }
 

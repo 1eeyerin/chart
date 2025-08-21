@@ -1,23 +1,19 @@
 import { findMelon } from "@/lib/company/melon";
-import { Session } from "next-auth";
 import ChartContainer from "./ui/ChartContainer";
 import ChartCard from "./ui/ChartCard";
 import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
+import { MelonChartProps } from "./types";
 
-interface MelonServerProps {
-  session: Session | null;
-}
-
-const MelonChart = async ({ session }: MelonServerProps) => {
+const MelonChart = async ({ session, artistName }: MelonChartProps) => {
   if (!session) {
     return null;
   }
 
   try {
     const [top, hot] = await Promise.all([
-      findMelon({ type: "TOP" }),
-      findMelon({ type: "HOT" }),
+      findMelon({ type: "TOP", artistName }),
+      findMelon({ type: "HOT", artistName }),
     ]);
 
     return (

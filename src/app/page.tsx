@@ -10,30 +10,43 @@ import YouTubeChart from "@/components/chart/YouTubeChart";
 import Header from "@/components/layout/Header";
 import TweetComposer from "@/components/social/TweetComposer";
 import TwitterLogin from "@/components/auth/TwitterLogin";
+import { ARTIST_CONFIG, SITE_CONFIG } from "@/lib/constants";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
     <>
-      <Header title={process.env.NEXT_PUBLIC_SITE_NAME} />
+      <Header title={SITE_CONFIG.NAME} />
       <main className="min-h-screen bg-gray-50 p-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="flex flex-col space-y-8">
             {session && (
               <>
                 <div className="grid grid-cols-12 gap-8">
                   <div className="col-span-4">
-                    <YouTubeChart session={session} />
+                    <YouTubeChart
+                      videoId={ARTIST_CONFIG.YOUTUBE_ID}
+                      session={session}
+                    />
                   </div>
                   <div className="col-span-8">
-                    <MelonChart session={session} />
+                    <MelonChart
+                      artistName={ARTIST_CONFIG.NAME}
+                      session={session}
+                    />
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-8">
-                  <GenieChart session={session} />
-                  <FloChart />
-                  <BugsChart session={session} />
+                  <GenieChart
+                    artistName={ARTIST_CONFIG.NAME}
+                    session={session}
+                  />
+                  <FloChart artistName={ARTIST_CONFIG.NAME} />
+                  <BugsChart
+                    artistName={ARTIST_CONFIG.NAME}
+                    session={session}
+                  />
                 </div>
                 <TweetComposer />
               </>

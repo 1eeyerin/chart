@@ -1,4 +1,5 @@
 import { YouTubeViewCountResponse } from "@/lib/types/youtube";
+import { API_KEYS } from "@/lib/constants";
 
 export const getYouTubeViewCount = async (
   videoUrl: string
@@ -6,7 +7,7 @@ export const getYouTubeViewCount = async (
   try {
     // YouTube Data API v3를 사용하여 조회수 가져오기
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoUrl}&key=${process.env.YOUTUBE_API_KEY}&part=statistics,snippet`
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoUrl}&key=${API_KEYS.YOUTUBE}&part=statistics,snippet`
     );
 
     if (!response.ok) {

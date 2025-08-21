@@ -1,21 +1,17 @@
 import { findBugs } from "@/lib/company/bugs";
-import { Session } from "next-auth";
 import ChartContainer from "./ui/ChartContainer";
 import ChartCard from "./ui/ChartCard";
 import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
+import { BugsChartProps } from "./types";
 
-interface BugsServerProps {
-  session: Session | null;
-}
-
-const BugsChart = async ({ session }: BugsServerProps) => {
+const BugsChart = async ({ session, artistName }: BugsChartProps) => {
   if (!session) {
     return null;
   }
 
   try {
-    const bugsData = await findBugs({ artistName: "아일릿" });
+    const bugsData = await findBugs({ artistName });
 
     return (
       <ChartContainer title={`${CHART_NAMES.BUGS} 차트 현황`}>

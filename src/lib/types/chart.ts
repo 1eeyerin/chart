@@ -39,7 +39,7 @@ export type ChartType = "TOP" | "HOT" | "GENIE";
 export const ARROW_MAP = {
   상승: "🔺",
   하락: "🔻",
-  유지: "⏺",
+  유지: "-",
 } as const;
 
 /**

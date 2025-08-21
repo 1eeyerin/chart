@@ -1,22 +1,17 @@
 import { getYouTubeViewCount } from "@/lib/company/youtube";
-import { Session } from "next-auth";
 import ChartContainer from "./ui/ChartContainer";
 import YouTubeCard from "./ui/YouTubeCard";
 import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
+import { YouTubeServerProps } from "./types";
 
-interface YouTubeServerProps {
-  session: Session | null;
-}
-
-const YouTubeChart = async ({ session }: YouTubeServerProps) => {
+const YouTubeChart = async ({ session, videoId }: YouTubeServerProps) => {
   if (!session) {
     return null;
   }
 
   try {
-    const videoUrl = "QE4OtGS3ky4";
-    const youtubeData = await getYouTubeViewCount(videoUrl);
+    const youtubeData = await getYouTubeViewCount(videoId);
 
     return (
       <ChartContainer title={`${CHART_NAMES.YOUTUBE} 조회수 현황`}>
