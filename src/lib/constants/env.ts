@@ -26,8 +26,8 @@ export const SITE_CONFIG = {
  * 아티스트 정보 상수
  */
 export const ARTIST_CONFIG = {
-  TITLE: process.env.TARGET_TITLE_NAME!,
-  YOUTUBE_ID: process.env.YOUTUBE_ID!,
+  TITLE: process.env.SEARCH_TITLE_NAME!,
+  YOUTUBE_ID: process.env.SEARCH_YOUTUBE_ID!,
 } as const;
 
 /**

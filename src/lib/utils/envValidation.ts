@@ -20,7 +20,7 @@ export function validateEnvironmentVariables(): void {
     { key: "TWITTER_ID", value: AUTH_CONFIG.TWITTER.CLIENT_ID },
     { key: "TWITTER_SECRET", value: AUTH_CONFIG.TWITTER.CLIENT_SECRET },
     { key: "NEXT_PUBLIC_SITE_NAME", value: SITE_CONFIG.NAME },
-    { key: "ARTIST_NAME", value: ARTIST_CONFIG.NAME },
+    { key: "TITLE", value: ARTIST_CONFIG.TITLE },
     { key: "YOUTUBE_ID", value: ARTIST_CONFIG.YOUTUBE_ID },
     { key: "NEXT_PUBLIC_PC_USER_AGENT", value: USER_AGENT_CONFIG.PC },
     { key: "NEXT_PUBLIC_MOBILE_USER_AGENT", value: USER_AGENT_CONFIG.MOBILE },
