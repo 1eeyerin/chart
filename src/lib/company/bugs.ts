@@ -29,9 +29,7 @@ export async function findBugs({
     .each((i, el) => {
       const titleName = $(el).find(".trackTitle").text().trim();
 
-      if (!title || !titleName.includes(title)) {
-        return;
-      }
+      if (!title || !titleName.includes(title)) return;
 
       const rank = Number($(el).find(".ranking strong").text().trim());
 

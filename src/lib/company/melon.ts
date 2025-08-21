@@ -31,36 +31,40 @@ export async function findMelon({
   $("#frm table tr")
     .slice(0, limit)
     .each((i, el) => {
-      const text = $(el).text().replace(/\s+/g, " ").trim();
+      const titleName = $(el).find(".rank01 a").text().trim();
 
-      if (text.includes(title)) {
-        const match = text.match(/(\d{1,3})위\s+단계\s+(상승|하락)\s+(\d+)/);
-        if (match) {
-          data = {
-            timestamp: now,
-            type,
-            found: true,
-            rank: parseInt(match[1], 10),
-            direction: match[2] as "상승" | "하락",
-            change: parseInt(match[3], 10),
-            arrow: ARROW_MAP[match[2] as keyof typeof ARROW_MAP],
-            artist: title,
-          };
-        } else {
-          const rankOnly = text.match(/(\d{1,3})위/);
-          data = {
-            timestamp: now,
-            type,
-            found: true,
-            rank: rankOnly ? parseInt(rankOnly[1], 10) : undefined,
-            direction: "유지",
-            change: 0,
-            arrow: ARROW_MAP.유지,
-            artist: title,
-          };
-        }
-        return false;
+      if (!title || !titleName.includes(title)) return;
+
+      const rank = Number($(el).find(".rank").first().text().trim());
+
+      const rankWrap = $(el).find(".rank_wrap");
+      let change = 0;
+      let direction: "상승" | "하락" | "유지" = "유지";
+
+      if (rankWrap.find(".rank_up").length > 0) {
+        direction = "상승";
+        change = Number(rankWrap.find(".up").text().trim() || 0);
+      } else if (rankWrap.find(".rank_down").length > 0) {
+        direction = "하락";
+        change = Number(rankWrap.find(".down").text().trim() || 0);
+      } else {
+        direction = "유지";
+        change = 0;
       }
+
+      const arrow = ARROW_MAP[direction];
+
+      data = {
+        timestamp: now,
+        type,
+        found: true,
+        rank,
+        direction,
+        change,
+        arrow,
+      };
+
+      return false;
     });
 
   return data;

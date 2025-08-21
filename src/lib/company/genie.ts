@@ -29,33 +29,33 @@ export async function findGenie({
     .each((i, el) => {
       const titleName = $(el).find(".title").text();
 
-      if (titleName.includes(title)) {
-        const rank = Number($(el).find(".number").text().split("\n")[0]);
+      if (!title || !titleName.includes(title)) return;
 
-        const rankSpan = $(el).find("span[class^='rank-']");
-        const change = Number(
-          rankSpan.clone().children().remove().end().text().trim() || 0
-        );
+      const rank = Number($(el).find(".number").text().split("\n")[0]);
 
-        const direction = rankSpan
-          .find(".hide")
-          .text()
-          .trim()
-          .replace("하강", "하락") as "상승" | "하락" | "유지";
-        const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "-";
+      const rankSpan = $(el).find("span[class^='rank-']");
+      const change = Number(
+        rankSpan.clone().children().remove().end().text().trim() || 0
+      );
 
-        data = {
-          timestamp: now,
-          found: true,
-          rank,
-          change,
-          direction,
-          arrow,
-          title: titleName,
-        };
+      const direction = rankSpan
+        .find(".hide")
+        .text()
+        .trim()
+        .replace("하강", "하락") as "상승" | "하락" | "유지";
+      const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "-";
 
-        return false;
-      }
+      data = {
+        timestamp: now,
+        found: true,
+        rank,
+        change,
+        direction,
+        arrow,
+        title: titleName,
+      };
+
+      return false;
     });
 
   return data;
