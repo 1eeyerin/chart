@@ -1,5 +1,4 @@
 import { FloChartResponse } from "@/lib/types/flo";
-import { getKoreanTime } from "../utils/time";
 import { fetchChartJSON } from "../utils/http";
 import {
   CHART_URLS,
@@ -22,7 +21,16 @@ export async function findFlo({
       referer: CHART_REFERERS.FLO,
     });
 
-    return processFloChartData((data?.data as FloChartResponse) || [], title);
+    // 데이터 구조 확인
+    if (
+      !data?.data ||
+      !data.data.trackList ||
+      !Array.isArray(data.data.trackList)
+    ) {
+      throw new Error("플로 차트 데이터 구조가 올바르지 않습니다.");
+    }
+
+    return processFloChartData(data.data as FloChartResponse, title);
   } catch (error) {
     console.error("Flo 차트 데이터 가져오기 실패:", error);
     throw error;
@@ -34,11 +42,10 @@ export function processFloChartData(
   title: string
 ): FloResult {
   if (!data.trackList || !Array.isArray(data.trackList)) {
-    return { timestamp: getKoreanTime(), found: false };
+    return { found: false };
   }
 
   const normalizedTarget = title.toLowerCase().trim();
-  const now = getKoreanTime();
 
   const foundTrack = data.trackList.find(
     (track) =>
@@ -49,7 +56,7 @@ export function processFloChartData(
   );
 
   if (!foundTrack) {
-    return { timestamp: now, found: false };
+    return { found: false };
   }
 
   const rankBadge = foundTrack.rank?.rankBadge || 0;
@@ -72,7 +79,6 @@ export function processFloChartData(
   }
 
   return {
-    timestamp: now,
     found: true,
     rank: data.trackList.indexOf(foundTrack) + 1,
     change,

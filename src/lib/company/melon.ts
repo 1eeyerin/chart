@@ -24,6 +24,14 @@ export async function findMelon({
   });
   const $ = cheerio.load(html);
 
+  // 크롤링 실패 감지: 테이블 데이터가 비어있는지 확인
+  const tableContent = $("#frm table tr").text().trim();
+  if (!tableContent) {
+    throw new Error(
+      `멜론 ${type} 차트 데이터를 불러올 수 없습니다. 크롤링에 실패했습니다.`
+    );
+  }
+
   let data: MelonResult = {
     type,
     found: false,
@@ -65,6 +73,7 @@ export async function findMelon({
         direction,
         change,
         arrow,
+        title: titleName,
       };
 
       return false;

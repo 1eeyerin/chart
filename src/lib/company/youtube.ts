@@ -12,7 +12,6 @@ export const getYouTubeViewCount = async (
     if (!response.ok) {
       const errText = await response.text();
       console.error("[YouTube API non-OK]", response.status, errText);
-      console.log({ title: `YouTube API 실패 (${response.status})` });
       throw new Error("YouTube API 요청에 실패했습니다.");
     }
 
