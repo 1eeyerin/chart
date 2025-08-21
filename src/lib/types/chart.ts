@@ -31,17 +31,3 @@ export interface ChartResultWithTitle extends BaseChartResult {
  * 차트 타입 정의
  */
 export type ChartType = "TOP" | "HOT" | "GENIE";
-
-/**
- * 화살표 이모지 매핑
- */
-export const ARROW_MAP = {
-  상승: "🔺",
-  하락: "🔻",
-  유지: "-",
-} as const;
-
-/**
- * 화살표 이모지 타입
- */
-export type ArrowType = (typeof ARROW_MAP)[keyof typeof ARROW_MAP];

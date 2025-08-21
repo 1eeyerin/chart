@@ -1,4 +1,4 @@
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 export interface BaseChartProps {
   title: string;
@@ -14,7 +14,7 @@ export type GenieChartProps = BaseChartWithSessionProps;
 
 export type BugsChartProps = BaseChartWithSessionProps;
 
-export type FloChartProps = BaseChartProps;
+export type FloChartProps = BaseChartWithSessionProps;
 
 export interface YouTubeServerProps {
   session: Session | null;

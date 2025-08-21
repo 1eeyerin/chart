@@ -1,20 +1,28 @@
 import * as cheerio from "cheerio";
 import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
-import { ARROW_MAP } from "../types/chart";
+import {
+  CHART_URLS,
+  USER_AGENT_TYPES,
+  CHART_DIRECTIONS,
+  ARROW_MAP,
+  CHART_TYPES,
+} from "../constants";
 import { MelonChartParams, MelonResult } from "./types";
 
-const TOP_URL = "https://www.melon.com/chart/index.htm";
-const HOT_URL = "https://www.melon.com/chart/hot100/index.htm";
-
 export async function findMelon({
-  type = "TOP",
+  type = CHART_TYPES.TOP,
   limit = 100,
   title,
 }: MelonChartParams): Promise<MelonResult> {
-  const url = type === "TOP" ? TOP_URL : HOT_URL;
+  const url =
+    type === CHART_TYPES.TOP ? CHART_URLS.MELON.TOP : CHART_URLS.MELON.HOT;
 
-  const html = await fetchChartHTML({ url, userAgentType: "PC", referer: url });
+  const html = await fetchChartHTML({
+    url,
+    userAgentType: USER_AGENT_TYPES.PC,
+    referer: url,
+  });
   const $ = cheerio.load(html);
 
   const now = getKoreanTime();
@@ -23,9 +31,9 @@ export async function findMelon({
     timestamp: now,
     type,
     found: false,
-    direction: "유지",
+    direction: CHART_DIRECTIONS.MAINTAIN,
     change: 0,
-    arrow: ARROW_MAP.유지,
+    arrow: ARROW_MAP[CHART_DIRECTIONS.MAINTAIN],
   };
 
   $("#frm table tr")
@@ -39,16 +47,16 @@ export async function findMelon({
 
       const rankWrap = $(el).find(".rank_wrap");
       let change = 0;
-      let direction: "상승" | "하락" | "유지" = "유지";
+      let direction: "상승" | "하락" | "유지" = CHART_DIRECTIONS.MAINTAIN;
 
       if (rankWrap.find(".rank_up").length > 0) {
-        direction = "상승";
+        direction = CHART_DIRECTIONS.UP;
         change = Number(rankWrap.find(".up").text().trim() || 0);
       } else if (rankWrap.find(".rank_down").length > 0) {
-        direction = "하락";
+        direction = CHART_DIRECTIONS.DOWN;
         change = Number(rankWrap.find(".down").text().trim() || 0);
       } else {
-        direction = "유지";
+        direction = CHART_DIRECTIONS.MAINTAIN;
         change = 0;
       }
 

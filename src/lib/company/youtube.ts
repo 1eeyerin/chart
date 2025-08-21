@@ -1,12 +1,12 @@
 import { YouTubeViewCountResponse } from "@/lib/types/youtube";
-import { API_KEYS } from "@/lib/constants";
+import { API_KEYS, CHART_URLS } from "@/lib/constants";
 
 export const getYouTubeViewCount = async (
   videoUrl: string
 ): Promise<YouTubeViewCountResponse> => {
   try {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoUrl}&key=${API_KEYS.YOUTUBE}&part=statistics,snippet`
+      `${CHART_URLS.YOUTUBE.BASE}?id=${videoUrl}&key=${API_KEYS.YOUTUBE}&part=statistics,snippet`
     );
 
     if (!response.ok) {

@@ -1,25 +1,30 @@
 import * as cheerio from "cheerio";
 import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
+import {
+  CHART_URLS,
+  CHART_REFERERS,
+  CHART_ORIGINS,
+  USER_AGENT_TYPES,
+  CHART_DIRECTIONS,
+  ARROW_MAP,
+} from "../constants";
 import type { BugsChartParams, BugsResult } from "./types";
-
-const BUGS_URL = "https://m.bugs.co.kr/chart";
 
 export async function findBugs({
   limit = 100,
   title,
 }: BugsChartParams): Promise<BugsResult> {
-  const url = BUGS_URL;
+  const url = CHART_URLS.BUGS.CHART;
 
   const html = await fetchChartHTML({
     url,
-    referer: "https://m.bugs.co.kr/chart",
-    origin: "https://m.bugs.co.kr",
-    userAgentType: "MOBILE",
+    referer: CHART_REFERERS.BUGS,
+    origin: CHART_ORIGINS.BUGS,
+    userAgentType: USER_AGENT_TYPES.MOBILE,
   });
   const $ = cheerio.load(html);
 
-  // 시간 포맷팅
   const now = getKoreanTime();
 
   let data: BugsResult = { timestamp: now, found: false };
@@ -42,14 +47,14 @@ export async function findBugs({
       let arrow: string;
 
       if (directionClass.includes("up")) {
-        direction = "상승";
-        arrow = "🔺";
+        direction = CHART_DIRECTIONS.UP;
+        arrow = ARROW_MAP[CHART_DIRECTIONS.UP];
       } else if (directionClass.includes("down")) {
-        direction = "하락";
-        arrow = "🔻";
+        direction = CHART_DIRECTIONS.DOWN;
+        arrow = ARROW_MAP[CHART_DIRECTIONS.DOWN];
       } else {
-        direction = "유지";
-        arrow = "⏺";
+        direction = CHART_DIRECTIONS.MAINTAIN;
+        arrow = ARROW_MAP[CHART_DIRECTIONS.MAINTAIN];
       }
 
       data = {

@@ -36,7 +36,7 @@ export default async function Home() {
                 </div>
                 <div className="grid grid-cols-3 gap-8">
                   <GenieChart title={ARTIST_CONFIG.TITLE} session={session} />
-                  <FloChart title={ARTIST_CONFIG.TITLE} />
+                  <FloChart title={ARTIST_CONFIG.TITLE} session={session} />
                   <BugsChart title={ARTIST_CONFIG.TITLE} session={session} />
                 </div>
                 <TweetComposer />

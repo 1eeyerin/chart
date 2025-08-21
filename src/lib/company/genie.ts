@@ -1,21 +1,24 @@
 import * as cheerio from "cheerio";
 import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
-import { ARROW_MAP } from "../types/chart";
+import {
+  CHART_URLS,
+  CHART_REFERERS,
+  USER_AGENT_TYPES,
+  ARROW_MAP,
+} from "../constants";
 import type { GenieChartParams, GenieResult } from "./types";
-
-const TOP_GENIE_URL = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1";
 
 export async function findGenie({
   limit = 100,
   title,
 }: GenieChartParams): Promise<GenieResult> {
-  const url = TOP_GENIE_URL;
+  const url = CHART_URLS.GENIE.TOP;
 
   const html = await fetchChartHTML({
     url,
-    referer: "https://www.genie.co.kr/chart/top200",
-    userAgentType: "PC",
+    referer: CHART_REFERERS.GENIE,
+    userAgentType: USER_AGENT_TYPES.PC,
   });
   const $ = cheerio.load(html);
 

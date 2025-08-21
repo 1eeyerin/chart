@@ -1,21 +1,25 @@
+import { CHART_TYPES, CHART_DIRECTIONS } from "../constants";
+
 export interface BaseChartParams {
   limit?: number;
   title: string;
 }
 
 export interface MelonChartParams extends BaseChartParams {
-  type?: "TOP" | "HOT";
+  type?: typeof CHART_TYPES.TOP | typeof CHART_TYPES.HOT;
 }
 
 export type GenieChartParams = BaseChartParams;
 export type BugsChartParams = BaseChartParams;
 
-// 반환
 export interface BaseResult {
   timestamp: string;
   found: boolean;
   rank?: number;
-  direction?: "상승" | "하락" | "유지";
+  direction?:
+    | typeof CHART_DIRECTIONS.UP
+    | typeof CHART_DIRECTIONS.DOWN
+    | typeof CHART_DIRECTIONS.MAINTAIN;
   change?: number;
   arrow?: string;
   title?: string;
@@ -23,8 +27,11 @@ export interface BaseResult {
 }
 
 export interface MelonResult extends BaseResult {
-  type: "TOP" | "HOT";
-  direction: "상승" | "하락" | "유지";
+  type: typeof CHART_TYPES.TOP | typeof CHART_TYPES.HOT;
+  direction:
+    | typeof CHART_DIRECTIONS.UP
+    | typeof CHART_DIRECTIONS.DOWN
+    | typeof CHART_DIRECTIONS.MAINTAIN;
   change: number;
   arrow: string;
 }

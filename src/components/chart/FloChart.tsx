@@ -1,27 +1,17 @@
-import { fetchChartJSON } from "@/lib/utils/http";
-import { processFloChartData } from "@/lib/company/flo";
-import { FloChartResponse } from "@/lib/types/flo";
+import { findFlo } from "@/lib/company/flo";
 import ChartContainer from "./ui/ChartContainer";
 import ChartCard from "./ui/ChartCard";
 import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
 import { FloChartProps } from "./types";
 
-const FLO_CHART_URL =
-  "https://www.music-flo.com/api/display/v1/browser/chart/1/track/list?size=100";
+const FloChart = async ({ session, title }: FloChartProps) => {
+  if (!session) {
+    return null;
+  }
 
-const FloChart = async ({ title }: FloChartProps) => {
   try {
-    const data = await fetchChartJSON({
-      url: FLO_CHART_URL,
-      userAgentType: "PC",
-      referer: "https://www.music-flo.com/browse?chartId=1",
-    });
-
-    const floData = processFloChartData(
-      (data?.data as FloChartResponse) || [],
-      title
-    );
+    const floData = await findFlo({ title });
 
     return (
       <ChartContainer title={`${CHART_NAMES.FLO} 차트 현황`}>
