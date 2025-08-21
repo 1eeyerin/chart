@@ -6,7 +6,6 @@
  * 기본 차트 결과 인터페이스
  */
 export interface BaseChartResult {
-  timestamp: string;
   found: boolean;
   rank?: number;
 }

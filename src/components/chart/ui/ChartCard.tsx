@@ -67,7 +67,6 @@ const ChartCard = ({
               곡명: <span className="font-medium">{data.title}</span>
             </p>
           )}
-          <p className="text-xs text-gray-500">업데이트: {data.timestamp}</p>
         </div>
       </CardContent>
     </Card>

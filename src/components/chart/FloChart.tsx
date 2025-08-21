@@ -1,37 +1,48 @@
-import { findFlo } from "@/lib/company/flo";
 import ChartContainer from "./ui/ChartContainer";
 import ChartCard from "./ui/ChartCard";
 import ChartError from "./ui/ChartError";
 import { CHART_NAMES } from "@/lib/constants/chartNames";
 import { FloChartProps } from "./types";
 
-const FloChart = async ({ session, title }: FloChartProps) => {
+const FloChart = ({ session, chartData }: FloChartProps) => {
   if (!session) {
     return null;
   }
 
-  try {
-    const floData = await findFlo({ title });
-
+  if (!chartData) {
     return (
       <ChartContainer title={`${CHART_NAMES.FLO} 차트 현황`}>
-        <ChartCard
+        <ChartError
           title={`${CHART_NAMES.FLO} 차트`}
-          data={floData}
-          bgColor="bg-blue-50"
-          textColor="text-blue-800"
+          error={new Error("차트 데이터를 불러올 수 없습니다.")}
         />
       </ChartContainer>
     );
-  } catch (error) {
-    console.error("데이터 로딩 실패:", error);
+  }
 
+  const { flo } = chartData.chartSummary;
+
+  if (!flo) {
     return (
       <ChartContainer title={`${CHART_NAMES.FLO} 차트 현황`}>
-        <ChartError title={`${CHART_NAMES.FLO} 차트`} error={error} />
+        <ChartError
+          title={`${CHART_NAMES.FLO} 차트`}
+          error={new Error("플로 차트 데이터를 불러올 수 없습니다.")}
+        />
       </ChartContainer>
     );
   }
+
+  return (
+    <ChartContainer title={`${CHART_NAMES.FLO} 차트 현황`}>
+      <ChartCard
+        title={`${CHART_NAMES.FLO} 차트`}
+        data={flo}
+        bgColor="bg-green-50"
+        textColor="text-green-800"
+      />
+    </ChartContainer>
+  );
 };
 
 export default FloChart;

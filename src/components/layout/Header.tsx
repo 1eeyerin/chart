@@ -27,14 +27,16 @@ export default function Header({ title = "", className = "" }: HeaderProps) {
       className={`bg-white shadow-sm border-b border-gray-200 ${className}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 w-full">
           {/* 왼쪽 제목 */}
-          <div className="flex items-center">
-            <h1 className="text-lg font-bold text-gray-900">{title}</h1>
+          <div className="flex items-center flex-grow w-[calc(100%-160px)]">
+            <h1 className="text-lg font-bold text-gray-900 text-ellipsis whitespace-nowrap overflow-hidden">
+              <span className="w-full">{title}</span>
+            </h1>
           </div>
 
           {/* 오른쪽 프로필 영역 */}
-          <div className="flex items-center">
+          <div className="flex items-center shrink-0 w-[160px]">
             {status === "loading" ? (
               <div className="animate-pulse flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gray-200 rounded-full"></div>

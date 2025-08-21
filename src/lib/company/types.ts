@@ -13,7 +13,6 @@ export type GenieChartParams = BaseChartParams;
 export type BugsChartParams = BaseChartParams;
 
 export interface BaseResult {
-  timestamp: string;
   found: boolean;
   rank?: number;
   direction?:
@@ -41,3 +40,10 @@ export type GenieResult = BaseResult;
 export type BugsResult = BaseResult;
 
 export type FloResult = BaseResult;
+
+export interface YouTubeViewCountResult {
+  found: boolean;
+  viewCount: string;
+  videoId: string;
+  title?: string;
+}

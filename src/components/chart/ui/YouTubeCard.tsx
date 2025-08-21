@@ -1,9 +1,9 @@
+import { YouTubeViewCountResult } from "@/lib/company/types";
 import Card, { CardHeader, CardContent } from "../../ui/Card";
-import { YouTubeViewCountResponse } from "@/lib/types/youtube";
 
 interface YouTubeCardProps {
   title: string;
-  data: YouTubeViewCountResponse;
+  data: YouTubeViewCountResult;
   className?: string;
 }
 
@@ -48,7 +48,6 @@ const YouTubeCard = ({ title, data, className = "" }: YouTubeCardProps) => {
               {data.viewCount}회
             </span>
           </div>
-          <p className="text-xs text-gray-500">업데이트: {data.timestamp}</p>
         </div>
       </CardContent>
     </Card>

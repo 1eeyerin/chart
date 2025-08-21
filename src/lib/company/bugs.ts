@@ -1,5 +1,4 @@
 import * as cheerio from "cheerio";
-import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
 import {
   CHART_URLS,
@@ -25,9 +24,7 @@ export async function findBugs({
   });
   const $ = cheerio.load(html);
 
-  const now = getKoreanTime();
-
-  let data: BugsResult = { timestamp: now, found: false };
+  let data: BugsResult = { found: false };
 
   $(".trackChartList li")
     .slice(0, limit)
@@ -58,7 +55,6 @@ export async function findBugs({
       }
 
       data = {
-        timestamp: now,
         found: true,
         rank,
         change,

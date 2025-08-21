@@ -7,6 +7,7 @@ type TextareaProps = {
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   disabled?: boolean;
   error?: boolean;
   errorMessage?: string;
@@ -40,6 +41,7 @@ export default function Textarea({
   onChange,
   onBlur,
   onFocus,
+  onKeyDown,
   disabled = false,
   error = false,
   errorMessage,
@@ -79,6 +81,7 @@ export default function Textarea({
         onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         disabled={disabled}
         required={required}

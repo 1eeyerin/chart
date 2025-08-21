@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut, signIn } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import Dropdown from "../ui/Dropdown";
@@ -43,10 +43,6 @@ export default function ProfileDropdown({
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSignIn = () => {
-    signIn("twitter", { callbackUrl: "/" });
-  };
-
   const handleSignOut = () => {
     setIsDropdownOpen(false);
     signOut({ callbackUrl: "/" });
@@ -81,8 +77,8 @@ export default function ProfileDropdown({
 
       {/* 프로필 정보 */}
       {showProfileInfo && (
-        <div className="text-left">
-          <p className="text-sm font-medium text-gray-900 leading-tight">
+        <div className="text-left w-[calc(100%-72px)]">
+          <p className="text-sm font-medium text-gray-900 leading-tight text-ellipsis overflow-hidden whitespace-nowrap break-all">
             {session.user?.name || "사용자"}
           </p>
         </div>

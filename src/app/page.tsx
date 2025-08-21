@@ -11,9 +11,19 @@ import Header from "@/components/layout/Header";
 import TweetComposer from "@/components/social/TweetComposer";
 import TwitterLogin from "@/components/auth/TwitterLogin";
 import { ARTIST_CONFIG, SITE_CONFIG } from "@/lib/constants";
+import { collectChartDataServer } from "@/lib/utils";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
+
+  let chartData = null;
+  if (session && ARTIST_CONFIG.TITLE) {
+    try {
+      chartData = await collectChartDataServer(ARTIST_CONFIG.TITLE);
+    } catch (error) {
+      console.error("차트 데이터 수집 실패:", error);
+    }
+  }
 
   return (
     <>
@@ -23,23 +33,20 @@ export default async function Home() {
           <div className="flex flex-col space-y-8">
             {session && (
               <>
-                <div className="grid grid-cols-12 gap-8">
-                  <div className="col-span-4">
-                    <YouTubeChart
-                      videoId={ARTIST_CONFIG.YOUTUBE_ID}
-                      session={session}
-                    />
+                <TweetComposer chartData={chartData} />
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8">
+                  <div className="md:col-span-4">
+                    <YouTubeChart session={session} chartData={chartData} />
                   </div>
-                  <div className="col-span-8">
-                    <MelonChart title={ARTIST_CONFIG.TITLE} session={session} />
+                  <div className="md:col-span-8">
+                    <MelonChart session={session} chartData={chartData} />
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-8">
-                  <GenieChart title={ARTIST_CONFIG.TITLE} session={session} />
-                  <FloChart title={ARTIST_CONFIG.TITLE} session={session} />
-                  <BugsChart title={ARTIST_CONFIG.TITLE} session={session} />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-8">
+                  <GenieChart session={session} chartData={chartData} />
+                  <FloChart session={session} chartData={chartData} />
+                  <BugsChart session={session} chartData={chartData} />
                 </div>
-                <TweetComposer />
               </>
             )}
             <TwitterLogin />

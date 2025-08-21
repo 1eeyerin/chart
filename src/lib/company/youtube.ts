@@ -1,9 +1,9 @@
-import { YouTubeViewCountResponse } from "@/lib/types/youtube";
 import { API_KEYS, CHART_URLS } from "@/lib/constants";
+import { YouTubeViewCountResult } from "./types";
 
 export const getYouTubeViewCount = async (
   videoUrl: string
-): Promise<YouTubeViewCountResponse> => {
+): Promise<YouTubeViewCountResult> => {
   try {
     const response = await fetch(
       `${CHART_URLS.YOUTUBE.BASE}?id=${videoUrl}&key=${API_KEYS.YOUTUBE}&part=statistics,snippet`
@@ -23,7 +23,6 @@ export const getYouTubeViewCount = async (
         found: false,
         viewCount: "0",
         videoId: videoUrl,
-        timestamp: new Date().toLocaleString("ko-KR"),
       };
     }
 
@@ -36,7 +35,6 @@ export const getYouTubeViewCount = async (
       viewCount: parseInt(viewCount).toLocaleString("ko-KR"),
       videoId: videoUrl,
       title,
-      timestamp: new Date().toLocaleString("ko-KR"),
     };
   } catch (error) {
     console.error("YouTube 조회수 가져오기 실패:", error);
@@ -45,7 +43,6 @@ export const getYouTubeViewCount = async (
       found: false,
       viewCount: "0",
       videoId: "",
-      timestamp: new Date().toLocaleString("ko-KR"),
     };
   }
 };

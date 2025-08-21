@@ -1,5 +1,4 @@
 import * as cheerio from "cheerio";
-import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
 import {
   CHART_URLS,
@@ -25,10 +24,7 @@ export async function findMelon({
   });
   const $ = cheerio.load(html);
 
-  const now = getKoreanTime();
-
   let data: MelonResult = {
-    timestamp: now,
     type,
     found: false,
     direction: CHART_DIRECTIONS.MAINTAIN,
@@ -63,7 +59,6 @@ export async function findMelon({
       const arrow = ARROW_MAP[direction];
 
       data = {
-        timestamp: now,
         type,
         found: true,
         rank,

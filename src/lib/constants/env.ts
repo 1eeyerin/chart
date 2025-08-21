@@ -28,6 +28,7 @@ export const SITE_CONFIG = {
 export const ARTIST_CONFIG = {
   TITLE: process.env.SEARCH_TITLE_NAME!,
   YOUTUBE_ID: process.env.SEARCH_YOUTUBE_ID!,
+  HASHTAGS: process.env.TWIT_HASHTAGS!,
 } as const;
 
 /**

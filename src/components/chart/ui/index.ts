@@ -6,4 +6,3 @@ export { default as ChartError } from "./ChartError";
 
 // 차트 타입들도 함께 export (필요시 사용)
 export type { ChartType } from "@/lib/types/chart";
-export type { YouTubeViewCountResponse } from "@/lib/types/youtube";

@@ -1,5 +1,4 @@
 import * as cheerio from "cheerio";
-import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
 import {
   CHART_URLS,
@@ -48,7 +47,6 @@ async function searchInPageForGenie(
         const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "-";
 
         foundData = {
-          timestamp: getKoreanTime(),
           found: true,
           rank,
           change,
@@ -88,8 +86,6 @@ export async function findGenie({
   limit = 100,
   title,
 }: GenieChartParams): Promise<GenieResult> {
-  const now = getKoreanTime();
-
   const foundResult = await PAGE_BATCHES.reduce<Promise<GenieResult | null>>(
     async (acc, [page1, page2]) => {
       const previousResult = await acc;
@@ -109,5 +105,5 @@ export async function findGenie({
     Promise.resolve<GenieResult | null>(null)
   );
 
-  return foundResult || { timestamp: now, found: false };
+  return foundResult || { found: false };
 }
