@@ -9,6 +9,7 @@ import {
   GenieChart,
   MelonChart,
 } from "@/components/chart";
+import YouTubeChart from "@/components/chart/YouTubeChart";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -21,7 +22,14 @@ export default async function Home() {
           <div className="flex flex-col space-y-8">
             {session && (
               <>
-                <MelonChart session={session} />
+                <div className="grid grid-cols-12 gap-8">
+                  <div className="col-span-4">
+                    <YouTubeChart session={session} />
+                  </div>
+                  <div className="col-span-8">
+                    <MelonChart session={session} />
+                  </div>
+                </div>
                 <div className="grid grid-cols-3 gap-8">
                   <GenieChart session={session} />
                   <FloChart />
