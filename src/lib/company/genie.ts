@@ -1,31 +1,21 @@
 import * as cheerio from "cheerio";
 import { getKoreanTime } from "../utils/time";
 import { fetchChartHTML } from "../utils/http";
-import { ChartResultWithTitle, ARROW_MAP } from "../types/chart";
+import { ARROW_MAP } from "../types/chart";
+import type { GenieChartParams, GenieResult } from "./types";
 
-const TOPGENIE_URL = "https://mw.genie.co.kr/chart";
-
-export interface GenieResult extends ChartResultWithTitle {
-  direction?: "상승" | "하락" | "유지";
-  change?: number;
-  arrow?: string;
-}
+const TOP_GENIE_URL = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1";
 
 export async function findGenie({
   limit = 100,
-  artistName = "NCT WISH",
-}: {
-  limit?: number;
-  artistName?: string;
-} = {}): Promise<GenieResult> {
-  const url = TOPGENIE_URL;
+  artistName,
+}: GenieChartParams): Promise<GenieResult> {
+  const url = TOP_GENIE_URL;
 
-  // HTTP 요청
   const html = await fetchChartHTML({
     url,
-    referer: "https://mw.genie.co.kr",
-    origin: "https://mw.genie.co.kr",
-    userAgentType: "MOBILE",
+    referer: "https://www.genie.co.kr/chart/top200",
+    userAgentType: "PC",
   });
   const $ = cheerio.load(html);
 
@@ -34,24 +24,27 @@ export async function findGenie({
 
   let data: GenieResult = { timestamp: now, found: false };
 
-  $(".list-music li")
+  $(".music-list-wrap .list-wrap tbody tr")
     .slice(0, limit)
     .each((i, el) => {
-      const text = $(el).text().replace(/\s+/g, " ").trim();
+      const artist = $(el).find(".info .artist").text().trim();
 
-      if (text.includes(artistName)) {
-        // 공백 단위로 분리
-        const parts = text.split(/\s+/);
+      if (artist.includes(artistName)) {
+        const rank = Number($(el).find(".number").text().split("\n")[0]);
 
-        // parts 예시: ["2","3","상승","사랑은","늘","도망가","임영웅","재생"]
-        const rank = Number(parts[0]); // 2
-        const change = Number(parts[1]); // 3
-        const direction = parts[2] as "상승" | "하락" | "유지"; // 상승 | 하락 | 유지
-        const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "⏺";
+        const rankSpan = $(el).find("span[class^='rank-']");
+        const change = Number(
+          rankSpan.clone().children().remove().end().text().trim() || 0
+        );
 
-        // 마지막에서 두 번째는 가수, 그 앞까지는 곡명
-        const artist = parts[parts.length - 2]; // 임영웅
-        const title = parts.slice(3, parts.length - 2).join(" "); // "사랑은 늘 도망가"
+        const direction = rankSpan
+          .find(".hide")
+          .text()
+          .trim()
+          .replace("하강", "하락") as "상승" | "하락" | "유지";
+        const arrow = ARROW_MAP[direction as keyof typeof ARROW_MAP] || "-";
+
+        const title = $(el).find(".title").text();
 
         data = {
           timestamp: now,
