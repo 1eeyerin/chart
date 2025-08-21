@@ -22,7 +22,18 @@ async function searchInPageForGenie(
       referer: CHART_REFERERS.GENIE,
       userAgentType: USER_AGENT_TYPES.PC,
     });
+
     const $ = cheerio.load(html);
+
+    // 크롤링 실패 감지: 차트 리스트 데이터가 비어있는지 확인
+    const chartListContent = $(".music-list-wrap .list-wrap tbody tr")
+      .text()
+      .trim();
+    if (!chartListContent) {
+      throw new Error(
+        `지니 차트 ${page}페이지 데이터를 불러올 수 없습니다. 크롤링에 실패했습니다.`
+      );
+    }
 
     let foundData: GenieResult | null = null;
 
@@ -61,14 +72,9 @@ async function searchInPageForGenie(
     return foundData;
   } catch (error) {
     console.error(`페이지 ${page} 로딩 실패:`, error);
-    return null;
+    throw error; // 에러를 다시 던져서 상위에서 처리할 수 있도록 함
   }
 }
-
-const PAGE_BATCHES = [
-  [1, 2],
-  [3, 4],
-] as const;
 
 /**
  * 지니 차트 (TOP 200) 에서 곡을 검색하는 함수
@@ -86,24 +92,54 @@ export async function findGenie({
   limit = 100,
   title,
 }: GenieChartParams): Promise<GenieResult> {
-  const foundResult = await PAGE_BATCHES.reduce<Promise<GenieResult | null>>(
-    async (acc, [page1, page2]) => {
-      const previousResult = await acc;
-      if (previousResult) return previousResult; // 이미 찾았으면 스킵
+  try {
+    // 1,2페이지 먼저 시도
+    const [result1, result2] = await Promise.allSettled([
+      searchInPageForGenie(1, title, limit),
+      searchInPageForGenie(2, title, limit),
+    ]);
 
-      try {
-        const [result1, result2] = await Promise.all([
-          searchInPageForGenie(page1, title, limit),
-          searchInPageForGenie(page2, title, limit),
-        ]);
-        return [result1, result2].find((result) => result?.found) || null;
-      } catch (error) {
-        console.error(`페이지 ${page1}, ${page2} 로딩 실패:`, error);
-        return null;
-      }
-    },
-    Promise.resolve<GenieResult | null>(null)
-  );
+    // 1,2페이지에서 에러가 발생한 경우 즉시 에러를 던짐
+    if (result1.status === "rejected") {
+      throw result1.reason;
+    }
+    if (result2.status === "rejected") {
+      throw result2.reason;
+    }
 
-  return foundResult || { found: false };
+    // 1,2페이지에서 곡을 찾은 경우
+    const foundInFirstBatch = [result1.value, result2.value].find(
+      (result) => result?.found
+    );
+    if (foundInFirstBatch) {
+      return foundInFirstBatch;
+    }
+
+    // 1,2페이지에서 찾지 못한 경우 3,4페이지 시도
+    const [result3, result4] = await Promise.allSettled([
+      searchInPageForGenie(3, title, limit),
+      searchInPageForGenie(4, title, limit),
+    ]);
+
+    // 3,4페이지에서 에러가 발생한 경우 즉시 에러를 던짐
+    if (result3.status === "rejected") {
+      throw result3.reason;
+    }
+    if (result4.status === "rejected") {
+      throw result4.reason;
+    }
+
+    // 3,4페이지에서 곡을 찾은 경우
+    const foundInSecondBatch = [result3.value, result4.value].find(
+      (result) => result?.found
+    );
+    if (foundInSecondBatch) {
+      return foundInSecondBatch;
+    }
+
+    // 모든 페이지를 확인했지만 곡을 찾지 못한 경우
+    return { found: false };
+  } catch (error) {
+    throw error; // 에러를 위로 전파
+  }
 }

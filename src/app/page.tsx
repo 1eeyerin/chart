@@ -18,11 +18,7 @@ export default async function Home() {
 
   let chartData = null;
   if (session && ARTIST_CONFIG.TITLE) {
-    try {
-      chartData = await collectChartDataServer(ARTIST_CONFIG.TITLE);
-    } catch (error) {
-      console.error("차트 데이터 수집 실패:", error);
-    }
+    chartData = await collectChartDataServer(ARTIST_CONFIG.TITLE);
   }
 
   return (
