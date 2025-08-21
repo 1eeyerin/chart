@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
 
 export default function AuthError() {
   const searchParams = useSearchParams();
@@ -44,19 +45,20 @@ export default function AuthError() {
         </div>
 
         <div className="space-y-3">
-          <Link
-            href="/"
-            className="block w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            메인 페이지로 돌아가기
+          <Link href="/" className="block">
+            <Button variant="primary" size="lg" fullWidth className="w-full">
+              메인 페이지로 돌아가기
+            </Button>
           </Link>
 
-          <button
+          <Button
             onClick={() => window.history.back()}
-            className="block w-full px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            variant="outline"
+            size="lg"
+            fullWidth
           >
             이전 페이지로 돌아가기
-          </button>
+          </Button>
         </div>
       </div>
     </div>

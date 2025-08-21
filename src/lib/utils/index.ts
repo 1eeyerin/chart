@@ -4,4 +4,5 @@
 
 export * from "./time";
 export * from "./http";
+export * from "./cn";
 export * from "../types/chart";

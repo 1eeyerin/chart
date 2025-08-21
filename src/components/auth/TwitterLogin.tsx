@@ -3,6 +3,8 @@
 import { signIn, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Card, { CardContent, CardHeader } from "../ui/Card";
+import Button from "../ui/Button";
 
 export default function TwitterLogin() {
   const { data: session, status } = useSession();
@@ -35,29 +37,30 @@ export default function TwitterLogin() {
   if (session) return null;
 
   return (
-    <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-md">
-      <div className="text-center">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">
-          트위터로 로그인
-        </h2>
-        <p className="text-gray-600 mb-4">
-          간편하게 트위터 계정으로 로그인하세요
-        </p>
-      </div>
-
-      {/* 에러 메시지 표시 */}
-      {error && (
-        <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600 text-sm text-center">{error}</p>
+    <Card className="flex flex-col items-center space-y-4" padding="lg">
+      <CardHeader>
+        <div className="text-center">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            트위터로 로그인
+          </h2>
+          <p className="text-gray-600 mb-4">
+            간편하게 트위터 계정으로 로그인하세요
+          </p>
         </div>
-      )}
+      </CardHeader>
 
-      <button
-        onClick={handleSignIn}
-        className="flex items-center space-x-2 px-6 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors"
-      >
-        <span>트위터로 로그인</span>
-      </button>
-    </div>
+      <CardContent className="w-full">
+        {/* 에러 메시지 표시 */}
+        {error && (
+          <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+            <p className="text-red-600 text-sm text-center">{error}</p>
+          </div>
+        )}
+
+        <Button onClick={handleSignIn} variant="secondary" size="lg" fullWidth>
+          트위터로 로그인
+        </Button>
+      </CardContent>
+    </Card>
   );
 }

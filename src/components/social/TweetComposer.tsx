@@ -2,6 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import Card, { CardHeader, CardContent } from "../ui/Card";
+import Textarea from "../ui/Textarea";
+import Button from "../ui/Button";
 
 export default function TweetComposer() {
   const { data: session } = useSession();
@@ -55,38 +58,43 @@ export default function TweetComposer() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">새 트윗 작성</h2>
-        <p className="text-gray-600">
-          {session.user?.name}님, 무엇을 공유하고 싶으신가요?
-        </p>
-      </div>
-
-      <form onSubmit={handleTweetSubmit} className="space-y-4">
+    <Card className="w-full max-w-2xl mx-auto" padding="lg">
+      <CardHeader>
         <div>
-          <textarea
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            새 트윗 작성
+          </h2>
+          <p className="text-gray-600">
+            {session.user?.name}님, 무엇을 공유하고 싶으신가요?
+          </p>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <form onSubmit={handleTweetSubmit} className="space-y-4">
+          <Textarea
             value={tweetContent}
             onChange={(e) => setTweetContent(e.target.value)}
             placeholder="무슨 일이 일어나고 있나요?"
-            className="w-full h-40 p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={10}
             maxLength={280}
+            showCharacterCount
+            fullWidth
+            size="lg"
           />
-          <div className="flex justify-between items-center mt-2">
-            <span className="text-sm text-gray-500">
-              {tweetContent.length}/280
-            </span>
-          </div>
-        </div>
 
-        <button
-          type="submit"
-          disabled={isPosting || !tweetContent.trim()}
-          className="w-full px-6 py-3 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1a8cd8] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-        >
-          {isPosting ? "게시 중..." : "트윗하기"}
-        </button>
-      </form>
-    </div>
+          <Button
+            type="submit"
+            disabled={isPosting || !tweetContent.trim()}
+            fullWidth
+            size="lg"
+            variant="primary"
+            loading={isPosting}
+          >
+            {isPosting ? "게시 중..." : "트윗하기"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

@@ -1,8 +1,5 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import TwitterLogin from "@/components/TwitterLogin";
-import TweetComposer from "@/components/TweetComposer";
-import Header from "@/components/Header";
 import {
   BugsChart,
   FloChart,
@@ -10,6 +7,9 @@ import {
   MelonChart,
 } from "@/components/chart";
 import YouTubeChart from "@/components/chart/YouTubeChart";
+import Header from "@/components/layout/Header";
+import TweetComposer from "@/components/social/TweetComposer";
+import TwitterLogin from "@/components/auth/TwitterLogin";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);

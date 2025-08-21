@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import ProfileDropdown from "./ProfileDropdown";
+import ProfileDropdown from "../auth/ProfileDropdown";
 
 type HeaderProps = {
   title?: string;
